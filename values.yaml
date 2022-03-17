@@ -1,0 +1,165 @@
+global:
+  environment: "aws"
+  vpc:
+    db_cidr:
+      - "127.0.0.1/32"
+    endpoint_cidr:
+      - "127.0.0.1/32"
+
+content-crawler:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ""
+  image:
+    repository: 635785716988.dkr.ecr.eu-west-1.amazonaws.com/dnsbelgium/mercator/content-crawler
+    tag: workshop
+  database:
+    url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=content_crawler"
+    username: "postgres"
+    password: "password"
+  extraEnv:
+    LOGGING_CONFIG: classpath:logback-local.xml
+
+dispatcher:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ""
+  image:
+    repository: 635785716988.dkr.ecr.eu-west-1.amazonaws.com/dnsbelgium/mercator/dispatcher
+    tag: workshop
+  database:
+    url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=dispatcher"
+    username: "postgres"
+    password: "password"
+  extraEnv:
+    LOGGING_CONFIG: classpath:logback-local.xml
+
+dns-crawler:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ""
+  image:
+    repository: 635785716988.dkr.ecr.eu-west-1.amazonaws.com/dnsbelgium/mercator/dns-crawler
+    tag: workshop
+  database:
+    url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=dns_crawler"
+    schema: "dns_crawler"
+    username: "postgres"
+    password: "password"
+  extraEnv:
+    LOGGING_CONFIG: classpath:logback-local.xml
+  geoip:
+    key:
+
+feature-extraction:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ""
+  image:
+    repository: 635785716988.dkr.ecr.eu-west-1.amazonaws.com/dnsbelgium/mercator/feature-extraction
+    tag: workshop
+  database:
+    url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=feature_extraction"
+    username: "postgres"
+    password: "password"
+    content_crawler:
+      url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=content_crawler"
+  extraEnv:
+    LOGGING_CONFIG: classpath:logback-local.xml
+
+ground-truth:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ""
+  image:
+    repository: 635785716988.dkr.ecr.eu-west-1.amazonaws.com/dnsbelgium/mercator/ground-truth
+    tag: workshop
+  database:
+    url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=ground_truth"
+    username: "postgres"
+    password: "password"
+  extraEnv:
+    LOGGING_CONFIG: classpath:logback-local.xml
+
+mercator-api:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ""
+  image:
+    repository: 635785716988.dkr.ecr.eu-west-1.amazonaws.com/dnsbelgium/mercator/mercator-api
+    tag: workshop
+  database:
+    url: "jdbc:postgresql://localhost:5432/postgres"
+    username: "postgres"
+    password: "password"
+  extraEnv:
+    LOGGING_CONFIG: classpath:logback-local.xml
+
+mercator-ui:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ""
+  image:
+    repository: 635785716988.dkr.ecr.eu-west-1.amazonaws.com/dnsbelgium/mercator/mercator-ui
+    tag: workshop
+
+mercator-wappalyzer:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ""
+  image:
+    repository: 635785716988.dkr.ecr.eu-west-1.amazonaws.com/dnsbelgium/mercator/mercator-wappalyzer
+    tag: workshop
+
+muppets:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ""
+  image:
+    repository: 635785716988.dkr.ecr.eu-west-1.amazonaws.com/dnsbelgium/mercator/muppets
+    tag: workshop
+  s3_bucket:
+
+smtp-crawler:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ""
+  image:
+    repository: 635785716988.dkr.ecr.eu-west-1.amazonaws.com/dnsbelgium/mercator/smtp-crawler
+    tag: workshop
+  database:
+    url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=smtp_crawler"
+    username: "postgres"
+    password: "password"
+  extraEnv:
+    LOGGING_CONFIG: classpath:logback-local.xml
+  geoip:
+    key:
+
+ssl-crawler:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ""
+  image:
+    repository: 635785716988.dkr.ecr.eu-west-1.amazonaws.com/dnsbelgium/mercator/ssl-crawler
+    tag: workshop
+  database:
+    name: "postgres"
+    host: "localhost"
+    username: "postgres"
+    password: "password"
+
+vat-crawler:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ""
+  image:
+    repository: 635785716988.dkr.ecr.eu-west-1.amazonaws.com/dnsbelgium/mercator/vat-crawler
+    tag: workshop
+  database:
+    url: "jdbc:postgresql://localhost:5432/postgres?currentSchema=vat_crawler"
+    schema: "vat_crawler"
+    username: "postgres"
+    password: "password"
+  extraEnv:
+    LOGGING_CONFIG: classpath:logback-local.xml
