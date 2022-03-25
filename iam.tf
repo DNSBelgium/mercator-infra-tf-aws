@@ -10,12 +10,7 @@ resource "aws_iam_role" "main" {
       "Principal": {
         "Federated": "${module.eks.oidc_provider_arn}"
       },
-      "Action": "sts:AssumeRoleWithWebIdentity",
-      "Condition": {
-        "StringEquals": {
-          "${module.eks.oidc_provider}:sub": "system:serviceaccount:*:*"
-        }
-      }
+      "Action": "sts:AssumeRoleWithWebIdentity"
     }
   ]
 }
